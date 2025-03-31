@@ -10,6 +10,20 @@ A simple Bitcoin mining implementation using CUDA for educational purposes. This
 - C++ compiler with C++14 support
 - libcurl development package
 
+### Installing Prerequisites on Windows
+
+1. Install Visual Studio 2019 or later with C++ development tools
+2. Install [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)
+3. Install [CMake](https://cmake.org/download/)
+4. Install [vcpkg](https://github.com/Microsoft/vcpkg) package manager:
+```bash
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+bootstrap-vcpkg.bat
+vcpkg integrate install
+vcpkg install curl:x64-windows
+```
+
 ### Installing Prerequisites on Ubuntu/Debian
 
 ```bash
@@ -24,6 +38,28 @@ brew install cmake curl
 ```
 
 ## Building the Project
+
+### On Windows
+
+1. Create a build directory and navigate to it:
+```bash
+mkdir build
+cd build
+```
+
+2. Generate the build files with CMake:
+```bash
+cmake .. -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 16 2019" -A x64
+```
+
+3. Build the project:
+```bash
+cmake --build . --config Release
+```
+
+The executable will be located in `build\Release\miner.exe`
+
+### On Linux/macOS
 
 1. Create a build directory and navigate to it:
 ```bash
@@ -44,6 +80,13 @@ make
 ## Running the Miner
 
 After building, you can run the miner with:
+
+**Windows:**
+```bash
+.\Release\miner.exe
+```
+
+**Linux/macOS:**
 ```bash
 ./miner
 ```
@@ -78,6 +121,24 @@ This is an educational implementation and is not intended for actual Bitcoin min
 - Much more optimized hashing implementations
 - Proper difficulty adjustment
 - Pool support
+
+## Troubleshooting
+
+### Windows-specific Issues
+
+1. If you get CUDA-related errors, make sure:
+   - Your NVIDIA drivers are up to date
+   - CUDA Toolkit is properly installed
+   - You're using the x64 build configuration
+
+2. If you get curl-related errors:
+   - Verify vcpkg is properly installed and integrated
+   - Try rebuilding with the correct vcpkg toolchain file
+
+### Common Issues
+
+- If the build fails with missing CUDA architectures, update the `CUDA_ARCHITECTURES` in CMakeLists.txt to match your GPU
+- For "compiler not found" errors, ensure you have the proper C++ development tools installed
 
 ## License
 
